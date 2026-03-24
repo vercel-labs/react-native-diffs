@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { DiffsView, type Theme } from 'react-native-diffs';
 
-const d1 = `\`\`\`diff
+const content = `\`\`\`diff
 @@ -3,9 +3,12 @@ import { useState } from 'react';
  export default function App() {
 +  const [count, setCount] = useState<number>(0);
@@ -15,9 +15,9 @@ const d1 = `\`\`\`diff
          Count: {count}
        </button>
      </div>
-\`\`\``;
+\`\`\`
 
-const d2 = `\`\`\`diff
+\`\`\`diff
 @@ -11,7 +11,7 @@ export default function Home() {
  <div>
 -  <h2>Design Engineer</h2>
@@ -75,14 +75,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <DiffsView
-        content={d1}
-        colorScheme="dark"
-        style={styles.container}
-        showsBlockHeaders={false}
-        theme={theme}
-      />
-      <DiffsView
-        content={d2}
+        content={content}
         colorScheme="dark"
         style={styles.container}
         showsBlockHeaders={false}

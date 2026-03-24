@@ -34,24 +34,18 @@ export default function App() {
 }
 ```
 
+### Diff formats
+
+Content can be a fenced ` ```diff ``` ` or ` ```patch ``` ` code block, or a raw unified diff string — MarkdownView auto-detects and renders it as a styled diff view with hunk headers, line numbers, and inline change highlighting.
+
+You can also include multiple fenced diff blocks in a single `content` string to render them all in one scrollable view.
+
 ## Examples
-
-### Basic diff
-
-```tsx
-import { DiffsView } from 'react-native-diffs';
-
-<DiffsView
-  content={diff}
-  colorScheme="dark"
-  style={{ flex: 1 }}
-/>
-```
 
 ### Custom dark theme
 
 ```tsx
-import { DiffsView, DiffDisplayMode, type Theme } from 'react-native-diffs';
+import { DiffsView, type Theme } from 'react-native-diffs';
 
 const theme: Theme = {
   fonts: {
@@ -66,7 +60,8 @@ const theme: Theme = {
     selectionTint: '#34D399',
   },
   diff: {
-    displayMode: DiffDisplayMode.UNIFIED,
+    displayMode: 'unified',
+    changeHighlightStyle: 'both',
     backgroundColor: '#000000',
     gutterBackground: '#0A0A0A',
     gutterText: '#52525B',
@@ -88,111 +83,6 @@ const theme: Theme = {
   theme={theme}
   style={{ flex: 1, backgroundColor: '#000000' }}
 />
-```
-
-### Multiple diffs
-
-```tsx
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { DiffsView, DiffDisplayMode, type Theme } from 'react-native-diffs';
-
-const d1 = `\`\`\`diff
-@@ -3,9 +3,12 @@ import { useState } from 'react';
- export default function App() {
--  const [count, setCount] = useState(0);
-+  const [count, setCount] = useState<number>(0);
-+  const [name, setName] = useState<string>('');
-
-   return (
-     <div>
--      <button onClick={() => setCount(count + 1)}>
-+      <input value={name} onChange={(e) => setName(e.target.value)} />
-+      <button onClick={() => setCount((prev) => prev + 1)}>
-         Count: {count}
-       </button>
-     </div>
-\`\`\``;
-
-const d2 = `\`\`\`diff
-@@ -11,7 +11,7 @@ export default function Home() {
- <div>
--  <h2>Design Engineer</h2>
-+  <h2>Designer</h2>
- </div>
-\`\`\``;
-
-const theme: Theme = {
-  fonts: {
-    codeSize: 15,
-  },
-  colors: {
-    body: '#E1E2E5',
-    code: '#D4D4D8',
-    codeBackground: '#18181B',
-    highlight: '#60A5FA',
-    emphasis: '#A1A1AA',
-    selectionTint: '#34D399',
-  },
-  diff: {
-    displayMode: DiffDisplayMode.UNIFIED,
-    backgroundColor: '#000000',
-    gutterBackground: '#0A0A0A',
-    gutterText: '#52525B',
-    addedLineBackground: '#22C55E33',
-    removedLineBackground: '#DC262620',
-    addedHighlightBackground: '#4ADE8066',
-    removedHighlightBackground: '#DC262650',
-    hunkHeaderBackground: '#27272A',
-    hunkHeaderText: '#71717A',
-    separatorColor: '#27272A',
-    borderWidth: 0,
-  },
-  table: {
-    cornerRadius: 8,
-    borderColor: '#27272A',
-    headerBackgroundColor: '#1C1C1F',
-    cellBackgroundColor: '#18181B',
-    stripeCellBackgroundColor: '#1C1C1F',
-  },
-  image: {
-    cornerRadius: 6,
-  },
-  spacings: {
-    general: 10,
-    list: 6,
-  },
-  sizes: {
-    bullet: 4,
-  },
-};
-
-export default function App() {
-  return (
-    <SafeAreaView style={styles.container}>
-      <DiffsView
-        content={d1}
-        colorScheme="dark"
-        style={styles.container}
-        showsBlockHeaders={false}
-        theme={theme}
-      />
-      <DiffsView
-        content={d2}
-        colorScheme="dark"
-        style={styles.container}
-        showsBlockHeaders={false}
-        theme={theme}
-      />
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000000',
-  },
-});
 ```
 
 ## Props
@@ -271,8 +161,9 @@ Pass a `theme` prop to customize the appearance. All fields are optional — onl
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `displayMode` | `DiffDisplayMode` | `UNIFIED` or `SIDE_BY_SIDE` |
-| `scrollBehavior` | `DiffScrollBehavior` | `HORIZONTAL_ONLY` or `BOTH_AXES` |
+| `displayMode` | `DiffDisplayMode` | `'unified'` or `'sideBySide'` |
+| `scrollBehavior` | `DiffScrollBehavior` | `'horizontalOnly'` or `'bothAxes'` |
+| `changeHighlightStyle` | `DiffChangeHighlightStyle` | `'lineOnly'`, `'inlineOnly'`, or `'both'` |
 | `contextCollapseThreshold` | `number` | Lines before context is collapsed (default `8`) |
 | `visibleContextLines` | `number` | Visible context lines around changes (default `2`) |
 | `gutterBackground` | `string` | Gutter background color |
@@ -284,6 +175,9 @@ Pass a `theme` prop to customize the appearance. All fields are optional — onl
 | `removedHighlightBackground` | `string` | Word-level removed highlight |
 | `hunkHeaderBackground` | `string` | Hunk header background |
 | `hunkHeaderText` | `string` | Hunk header text color |
+| `fileHeaderBackground` | `string` | File header background |
+| `fileHeaderText` | `string` | File header text color |
+| `fileMetadataText` | `string` | File metadata text color |
 | `separatorColor` | `string` | Separator color |
 | `borderWidth` | `number` | Diff border width (set `0` to remove) |
 | `borderColor` | `string` | Diff border color |
