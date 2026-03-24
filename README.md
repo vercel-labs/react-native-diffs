@@ -1,6 +1,6 @@
 # React Native Diffs
 
-<img width="2304" height="1076" alt="CleanShot 2026-03-24 at 15 15 47@2x" src="https://github.com/user-attachments/assets/ea918afe-35ca-4627-9eb7-b16640017742" />
+<img width="1900" height="976" alt="CleanShot 2026-03-24 at 15 16 26@2x" src="https://github.com/user-attachments/assets/dcd3284b-2d77-4efb-92af-6ff6e577d939" />
 
 Diff library for React Native, powered by [MarkdownView](https://github.com/HumanInterfaceDesign/MarkdownView).
 
