@@ -1,0 +1,17 @@
+{
+  "cxxNamespace": ["diffs"],
+  "ios": {
+    "iosModuleName": "Diffs"
+  },
+  "android": {
+    "androidNamespace": ["diffs"],
+    "androidCxxLibName": "diffs"
+  },
+  "autolinking": {
+    "Diffs": {
+      "swift": "HybridDiffs",
+      "kotlin": "HybridDiffs"
+    }
+  },
+  "ignorePaths": ["node_modules"]
+}
