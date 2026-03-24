@@ -1,28 +1,61 @@
-class HybridDiffs : HybridDiffsSpec {
+import NitroModules
+import UIKit
+import MarkdownView
+import MarkdownParser
 
-  // UIView
-  var view: UIView = UIView()
+final class HybridDiffs : HybridDiffsSpec {
+    var view: UIView = UIView()
+    private let scrollView = UIScrollView()
+    private let markdownTextView = MarkdownTextView()
+    private var lastContent: String = ""
 
-  // props
-  var color: String = "#000" {
-    didSet {
-      view.backgroundColor = hexStringToUIColor(hexColor: color)
+    var content: String = ""
+    var colorScheme: String = "dark"
+    var contentInset: ContentInset?
+    var showsBlockHeaders: Bool?
+
+    override init() {
+        super.init()
+
+        markdownTextView.theme.fonts.body = .systemFont(ofSize: 16)
+        markdownTextView.theme.fonts.code = .monospacedSystemFont(ofSize: 14, weight: .regular)
+
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+
+        markdownTextView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(markdownTextView)
+        NSLayoutConstraint.activate([
+            markdownTextView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            markdownTextView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            markdownTextView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            markdownTextView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+            scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
+        ])
     }
-  }
-  
-  func hexStringToUIColor(hexColor: String) -> UIColor {
-    let stringScanner = Scanner(string: hexColor)
 
-    if(hexColor.hasPrefix("#")) {
-      stringScanner.scanLocation = 1
-    }
-    var color: UInt32 = 0
-    stringScanner.scanHexInt32(&color)
+    func afterUpdate() {
+        if let contentInset {
+            let insets = UIEdgeInsets(top: contentInset.top, left: 0, bottom: contentInset.bottom, right: 0)
+            scrollView.contentInset = insets
+            scrollView.scrollIndicatorInsets = insets
+        }
 
-    let r = CGFloat(Int(color >> 16) & 0x000000FF)
-    let g = CGFloat(Int(color >> 8) & 0x000000FF)
-    let b = CGFloat(Int(color) & 0x000000FF)
+        markdownTextView.theme.showsBlockHeaders = showsBlockHeaders ?? true
 
-    return UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1)
-  }  
+        guard content != lastContent else { return }
+        lastContent = content
+
+        let preprocessed = MarkdownTextView.PreprocessedContent(
+            markdown: content,
+            theme: .default
+        )
+        markdownTextView.setMarkdown(preprocessed)
+    } 
 }

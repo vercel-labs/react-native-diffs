@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => min_ios_version_supported }
+  s.platforms    = { :ios => '16.0' }
   s.source       = { :git => "https://github.com/vercel-labs/react-native-diffs.git", :tag => "#{s.version}" }
 
   s.source_files = [
@@ -18,6 +18,12 @@ Pod::Spec.new do |s|
     "ios/**/*.{m,mm}",
     "cpp/**/*.{hpp,cpp}",
   ]
+
+  spm_dependency(s,
+    url: "https://github.com/HumanInterfaceDesign/MarkdownView",
+    requirement: { kind: "branch", branch: "main" }, # todo use version
+    products: ["MarkdownView"]
+  )
 
   s.dependency 'React-jsi'
   s.dependency 'React-callinvoker'
