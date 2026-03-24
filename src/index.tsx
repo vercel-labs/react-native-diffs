@@ -14,9 +14,10 @@ export type {
   ThemeTable,
   ThemeImage,
   ThemeDiff,
+  DiffDisplayMode,
+  DiffScrollBehavior,
+  DiffChangeHighlightStyle,
 } from './Diffs.nitro';
-
-export { DiffDisplayMode, DiffScrollBehavior } from './Diffs.nitro';
 
 export const DiffsView = getHostComponent<DiffsProps, DiffsMethods>(
   'Diffs',

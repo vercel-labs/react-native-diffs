@@ -53,19 +53,16 @@ export interface ThemeImage {
   placeholderColor?: string;
 }
 
-export enum DiffDisplayMode {
-  UNIFIED = 'unified',
-  SIDE_BY_SIDE = 'sideBySide',
-}
+export type DiffDisplayMode = 'unified' | 'sideBySide';
 
-export enum DiffScrollBehavior {
-  HORIZONTAL_ONLY = 'horizontalOnly',
-  BOTH_AXES = 'bothAxes',
-}
+export type DiffScrollBehavior = 'horizontalOnly' | 'bothAxes';
+
+export type DiffChangeHighlightStyle = 'lineOnly' | 'inlineOnly' | 'both';
 
 export interface ThemeDiff {
   displayMode?: DiffDisplayMode;
   scrollBehavior?: DiffScrollBehavior;
+  changeHighlightStyle?: DiffChangeHighlightStyle;
   contextCollapseThreshold?: number;
   visibleContextLines?: number;
   gutterBackground?: string;
@@ -77,6 +74,9 @@ export interface ThemeDiff {
   removedHighlightBackground?: string;
   hunkHeaderBackground?: string;
   hunkHeaderText?: string;
+  fileHeaderBackground?: string;
+  fileHeaderText?: string;
+  fileMetadataText?: string;
   separatorColor?: string;
   borderWidth?: number;
   borderColor?: string;

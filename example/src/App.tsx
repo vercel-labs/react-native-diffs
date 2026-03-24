@@ -1,10 +1,9 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { DiffsView, DiffDisplayMode, type Theme } from 'react-native-diffs';
+import { DiffsView, type Theme } from 'react-native-diffs';
 
 const d1 = `\`\`\`diff
 @@ -3,9 +3,12 @@ import { useState } from 'react';
  export default function App() {
--  const [count, setCount] = useState(0);
 +  const [count, setCount] = useState<number>(0);
 +  const [name, setName] = useState<string>('');
 
@@ -39,7 +38,8 @@ const theme: Theme = {
     selectionTint: '#34D399',
   },
   diff: {
-    displayMode: DiffDisplayMode.UNIFIED,
+    displayMode: 'unified',
+    changeHighlightStyle: 'both',
     backgroundColor: '#000000',
     gutterBackground: '#0A0A0A',
     gutterText: '#52525B',

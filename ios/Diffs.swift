@@ -142,6 +142,13 @@ final class HybridDiffs : HybridDiffsSpec {
                 case .horizontalonly: mdTheme.diff.scrollBehavior = .horizontalOnly
                 }
             }
+            if let style = diff.changeHighlightStyle {
+                switch style {
+                case .lineonly: mdTheme.diff.changeHighlightStyle = .lineOnly
+                case .inlineonly: mdTheme.diff.changeHighlightStyle = .inlineOnly
+                case .both: mdTheme.diff.changeHighlightStyle = .both
+                }
+            }
             if let v = diff.contextCollapseThreshold { mdTheme.diff.contextCollapseThreshold = Int(v) }
             if let v = diff.visibleContextLines { mdTheme.diff.visibleContextLines = Int(v) }
             if let hex = diff.gutterBackground { mdTheme.diff.gutterBackground = UIColor(hex: hex) }
@@ -153,6 +160,9 @@ final class HybridDiffs : HybridDiffsSpec {
             if let hex = diff.removedHighlightBackground { mdTheme.diff.removedHighlightBackground = UIColor(hex: hex) }
             if let hex = diff.hunkHeaderBackground { mdTheme.diff.hunkHeaderBackground = UIColor(hex: hex) }
             if let hex = diff.hunkHeaderText { mdTheme.diff.hunkHeaderText = UIColor(hex: hex) }
+            if let hex = diff.fileHeaderBackground { mdTheme.diff.fileHeaderBackground = UIColor(hex: hex) }
+            if let hex = diff.fileHeaderText { mdTheme.diff.fileHeaderText = UIColor(hex: hex) }
+            if let hex = diff.fileMetadataText { mdTheme.diff.fileMetadataText = UIColor(hex: hex) }
             if let hex = diff.separatorColor { mdTheme.diff.separatorColor = UIColor(hex: hex) }
             if let v = diff.borderWidth { mdTheme.diff.borderWidth = CGFloat(v) }
             if let hex = diff.borderColor { mdTheme.diff.borderColor = UIColor(hex: hex) }
