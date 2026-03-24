@@ -1,14 +1,16 @@
-# react-native-diffs
+# React Native Diffs
 
-Diff and markdown rendering library for React Native, powered by [MarkdownView](https://github.com/HumanInterfaceDesign/MarkdownView).
+<img width="2504" height="1092" alt="CleanShot 2026-03-24 at 15 13 52@2x" src="https://github.com/user-attachments/assets/ffb96fd2-4ce1-404a-b4b9-f6a0df19f9c3" />
+
+
+
+Diff library for React Native, powered by [MarkdownView](https://github.com/HumanInterfaceDesign/MarkdownView).
 
 ## Installation
 
 ```sh
 npm install react-native-diffs react-native-nitro-modules
 ```
-
-> `react-native-nitro-modules` is required as this library relies on [Nitro Modules](https://nitro.margelo.com/).
 
 ## Usage
 
@@ -297,7 +299,3 @@ Pass a `theme` prop to customize the appearance. All fields are optional — onl
 ## License
 
 MIT
-
----
-
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
