@@ -9,8 +9,14 @@
   },
   "autolinking": {
     "Diffs": {
-      "swift": "HybridDiffs",
-      "kotlin": "HybridDiffs"
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridDiffs"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridDiffs"
+      }
     }
   },
   "ignorePaths": ["node_modules"]
