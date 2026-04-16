@@ -25,6 +25,8 @@ export interface ThemeColors {
   code?: string;
   codeBackground?: string;
   selectionTint?: string;
+  selectionBackground?: string;
+  lineSelectionBackground?: string;
 }
 
 export interface ThemeSpacings {
@@ -92,12 +94,41 @@ export interface Theme {
   diff?: ThemeDiff;
 }
 
+export interface CustomMenuItem {
+  id: string;
+  title: string;
+  systemImage?: string;
+}
+
+export interface SelectionContext {
+  text: string;
+  startLine: number;
+  endLine: number;
+}
+
+export interface CustomMenuEvent {
+  itemId: string;
+  text: string;
+  startLine: number;
+  endLine: number;
+}
+
+export interface LineSelectionInfo {
+  startLine: number;
+  endLine: number;
+  contents: string[];
+  language?: string;
+}
+
 export interface DiffsProps extends HybridViewProps {
   content: string;
   colorScheme: string;
   contentInset?: ContentInset;
   showsBlockHeaders?: boolean;
   theme?: Theme;
+  customMenuItems?: CustomMenuItem[];
+  onCustomMenuAction?: (event: CustomMenuEvent) => void;
+  onLineSelection?: (info: LineSelectionInfo | undefined) => void;
 }
 export interface DiffsMethods extends HybridViewMethods {}
 

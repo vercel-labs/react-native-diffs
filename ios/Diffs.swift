@@ -15,6 +15,9 @@ final class HybridDiffs : HybridDiffsSpec {
     var contentInset: ContentInset?
     var showsBlockHeaders: Bool?
     var theme: Theme?
+    var customMenuItems: [CustomMenuItem]?
+    var onCustomMenuAction: ((CustomMenuEvent) -> Void)?
+    var onLineSelection: ((LineSelectionInfo?) -> Void)?
 
     override init() {
         super.init()
@@ -50,6 +53,9 @@ final class HybridDiffs : HybridDiffsSpec {
         applyTheme(theme, to: &mdTheme)
         mdTheme.showsBlockHeaders = showsBlockHeaders ?? true
         markdownTextView.theme = mdTheme
+
+        applyCustomMenuItems()
+        applyLineSelectionHandler()
 
         guard content != lastContent else { return }
         lastContent = content
@@ -96,6 +102,8 @@ final class HybridDiffs : HybridDiffsSpec {
             if let hex = colors.code { mdTheme.colors.code = UIColor(hex: hex) }
             if let hex = colors.codeBackground { mdTheme.colors.codeBackground = UIColor(hex: hex) }
             if let hex = colors.selectionTint { mdTheme.colors.selectionTint = UIColor(hex: hex) }
+            if let hex = colors.selectionBackground { mdTheme.colors.selectionBackground = UIColor(hex: hex) }
+            if let hex = colors.lineSelectionBackground { mdTheme.colors.lineSelectionBackground = UIColor(hex: hex) }
         }
 
         // Spacings
@@ -166,6 +174,49 @@ final class HybridDiffs : HybridDiffsSpec {
             if let hex = diff.separatorColor { mdTheme.diff.separatorColor = UIColor(hex: hex) }
             if let v = diff.borderWidth { mdTheme.diff.borderWidth = CGFloat(v) }
             if let hex = diff.borderColor { mdTheme.diff.borderColor = UIColor(hex: hex) }
+        }
+    }
+
+    // MARK: - Custom Menu
+
+    private func applyCustomMenuItems() {
+        guard let items = customMenuItems, !items.isEmpty else {
+            markdownTextView.textView.customMenuItems = []
+            return
+        }
+        let handler = onCustomMenuAction
+        markdownTextView.textView.customMenuItems = items.map { item in
+            let image = item.systemImage.flatMap { UIImage(systemName: $0) }
+            let id = item.id
+            return LTXCustomMenuItem(title: item.title, image: image) { ctx in
+                handler?(CustomMenuEvent(
+                    itemId: id,
+                    text: ctx.text,
+                    startLine: Double(ctx.startLine),
+                    endLine: Double(ctx.endLine)
+                ))
+            }
+        }
+    }
+
+    // MARK: - Line Selection
+
+    private func applyLineSelectionHandler() {
+        guard let handler = onLineSelection else {
+            markdownTextView.lineSelectionHandler = nil
+            return
+        }
+        markdownTextView.lineSelectionHandler = { info in
+            guard let info else {
+                handler(nil)
+                return
+            }
+            handler(LineSelectionInfo(
+                startLine: Double(info.lineRange.lowerBound),
+                endLine: Double(info.lineRange.upperBound),
+                contents: info.contents,
+                language: info.language
+            ))
         }
     }
 }

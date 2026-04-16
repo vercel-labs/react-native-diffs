@@ -14,4 +14,8 @@ export type {
   DiffDisplayMode,
   DiffScrollBehavior,
   DiffChangeHighlightStyle,
+  CustomMenuItem,
+  SelectionContext,
+  CustomMenuEvent,
+  LineSelectionInfo,
 } from './Diffs.nitro';

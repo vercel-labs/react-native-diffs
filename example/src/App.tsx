@@ -1,5 +1,9 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { DiffsView, type Theme } from 'react-native-diffs';
+import {
+  DiffsView,
+  type Theme,
+  type LineSelectionInfo,
+} from 'react-native-diffs';
 
 const content = `\`\`\`diff
 @@ -3,9 +3,12 @@ import { useState } from 'react';
@@ -80,6 +84,14 @@ export default function App() {
         style={styles.container}
         showsBlockHeaders={false}
         theme={theme}
+        customMenuItems={[
+          { id: 'explain', title: 'Explain', systemImage: 'lightbulb' },
+          { id: 'apply', title: 'Apply', systemImage: 'checkmark.circle' },
+        ]}
+        onLineSelection={{
+          f: (info: LineSelectionInfo | undefined) => console.log(info),
+        }}
+        onCustomMenuAction={{ f: (event) => console.log(event) }}
       />
     </SafeAreaView>
   );
