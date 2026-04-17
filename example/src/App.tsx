@@ -55,6 +55,8 @@ const theme: Theme = {
     hunkHeaderText: '#71717A',
     separatorColor: '#27272A',
     borderWidth: 0,
+    lineNumberStyle: 'single',
+    showsChangeMarkers: false,
   },
   table: {
     cornerRadius: 8,
@@ -88,8 +90,8 @@ export default function App() {
           { id: 'explain', title: 'Explain', systemImage: 'lightbulb' },
           { id: 'apply', title: 'Apply', systemImage: 'checkmark.circle' },
         ]}
-        onLineSelection={{
-          f: (info: LineSelectionInfo | undefined) => console.log(info),
+        onLineSelectionEnd={{
+          f: (info: LineSelectionInfo | undefined) => console.log(info, 'end'),
         }}
         onCustomMenuAction={{ f: (event) => console.log(event) }}
       />

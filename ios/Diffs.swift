@@ -210,17 +210,20 @@ final class HybridDiffs : HybridDiffsSpec {
     // MARK: - Line Selection
 
     private func applyLineSelectionHandler() {
-        if let handler = onLineSelection {
+        let liveHandler = onLineSelection
+        let endHandler = onLineSelectionEnd
+
+        if liveHandler != nil || endHandler != nil {
             markdownTextView.lineSelectionHandler = { info in
-                handler(info.map(HybridDiffs.bridge))
+                liveHandler?(info.map(HybridDiffs.bridge))
             }
         } else {
             markdownTextView.lineSelectionHandler = nil
         }
 
-        if let handler = onLineSelectionEnd {
+        if let endHandler {
             markdownTextView.lineSelectionEndedHandler = { info in
-                handler(info.map(HybridDiffs.bridge))
+                endHandler(info.map(HybridDiffs.bridge))
             }
         } else {
             markdownTextView.lineSelectionEndedHandler = nil
