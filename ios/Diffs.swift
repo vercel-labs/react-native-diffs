@@ -18,6 +18,7 @@ final class HybridDiffs : HybridDiffsSpec {
     var customMenuItems: [CustomMenuItem]?
     var onCustomMenuAction: ((CustomMenuEvent) -> Void)?
     var onLineSelection: ((LineSelectionInfo?) -> Void)?
+    var onLineSelectionEnd: ((LineSelectionInfo?) -> Void)?
 
     override init() {
         super.init()
@@ -202,22 +203,30 @@ final class HybridDiffs : HybridDiffsSpec {
     // MARK: - Line Selection
 
     private func applyLineSelectionHandler() {
-        guard let handler = onLineSelection else {
-            markdownTextView.lineSelectionHandler = nil
-            return
-        }
-        markdownTextView.lineSelectionHandler = { info in
-            guard let info else {
-                handler(nil)
-                return
+        if let handler = onLineSelection {
+            markdownTextView.lineSelectionHandler = { info in
+                handler(info.map(HybridDiffs.bridge))
             }
-            handler(LineSelectionInfo(
-                startLine: Double(info.lineRange.lowerBound),
-                endLine: Double(info.lineRange.upperBound),
-                contents: info.contents,
-                language: info.language
-            ))
+        } else {
+            markdownTextView.lineSelectionHandler = nil
         }
+
+        if let handler = onLineSelectionEnd {
+            markdownTextView.lineSelectionEndedHandler = { info in
+                handler(info.map(HybridDiffs.bridge))
+            }
+        } else {
+            markdownTextView.lineSelectionEndedHandler = nil
+        }
+    }
+
+    private static func bridge(_ info: MarkdownView.LineSelectionInfo) -> LineSelectionInfo {
+        LineSelectionInfo(
+            startLine: Double(info.lineRange.lowerBound),
+            endLine: Double(info.lineRange.upperBound),
+            contents: info.contents,
+            language: info.language
+        )
     }
 }
 

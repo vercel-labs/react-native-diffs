@@ -129,6 +129,7 @@ export interface DiffsProps extends HybridViewProps {
   customMenuItems?: CustomMenuItem[];
   onCustomMenuAction?: (event: CustomMenuEvent) => void;
   onLineSelection?: (info: LineSelectionInfo | undefined) => void;
+  onLineSelectionEnd?: (info: LineSelectionInfo | undefined) => void;
 }
 export interface DiffsMethods extends HybridViewMethods {}
 
