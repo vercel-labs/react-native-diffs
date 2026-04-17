@@ -94,6 +94,62 @@ const theme: Theme = {
 | `contentInset` | `ContentInset` | No | Scroll view content inset `{ top, bottom }` |
 | `showsBlockHeaders` | `boolean` | No | Show code/diff block headers with copy button (default `true`) |
 | `theme` | `Theme` | No | Custom theme configuration |
+| `customMenuItems` | `CustomMenuItem[]` | No | Extra items appended to the text-selection menu on code/diff blocks |
+| `onCustomMenuAction` | `(event: CustomMenuEvent) => void` | No | Fires when a custom menu item is tapped. Must be wrapped as `{ f: handler }` (see below) |
+| `onLineSelection` | `(info?: LineSelectionInfo) => void` | No | Enables line selection mode; fires continuously as the user drags. Wrap as `{ f: handler }` |
+| `onLineSelectionEnd` | `(info?: LineSelectionInfo) => void` | No | Fires once when the selection gesture settles (tap release / drag release). Wrap as `{ f: handler }`. Setting only this still enables line selection. |
+
+### Callback wrapping
+
+Nitro view-prop callbacks cross the bridge as a reference-tracked wrapper, so functions must be passed as `{ f: handler }` rather than bare functions:
+
+```tsx
+<DiffsView
+  onCustomMenuAction={{ f: (event) => console.log(event) }}
+  onLineSelectionEnd={{ f: (info) => console.log(info) }}
+/>
+```
+
+### Custom menu items
+
+Long-press a code or diff block to bring up the text-selection menu. Items in `customMenuItems` are appended after the system actions (Copy, Select All, Share). `systemImage` accepts any SF Symbol name.
+
+```tsx
+<DiffsView
+  content={content}
+  customMenuItems={[
+    { id: 'explain', title: 'Explain', systemImage: 'lightbulb' },
+    { id: 'apply', title: 'Apply', systemImage: 'checkmark.circle' },
+  ]}
+  onCustomMenuAction={{
+    f: ({ itemId, text, startLine, endLine }) => {
+      console.log(itemId, text, startLine, endLine);
+    },
+  }}
+/>
+```
+
+### Line selection
+
+Providing `onLineSelection` or `onLineSelectionEnd` switches code and diff blocks from text selection to line selection: tap to select a single line, or long-press-and-drag to select a range.
+
+- `onLineSelection` fires on every range change — use it for live visual feedback.
+- `onLineSelectionEnd` fires exactly once per interaction, when the user lifts their finger — use it for actions like showing a contextual button. You can set it on its own.
+
+Customize the highlight with `theme.colors.lineSelectionBackground`.
+
+```tsx
+<DiffsView
+  content={content}
+  theme={{ colors: { lineSelectionBackground: '#60A5FA33' } }}
+  onLineSelectionEnd={{
+    f: (info) => {
+      if (!info) return;
+      console.log(`lines ${info.startLine}-${info.endLine}`, info.contents);
+    },
+  }}
+/>
+```
 
 ## Theming
 
@@ -122,6 +178,8 @@ Pass a `theme` prop to customize the appearance. All fields are optional — onl
 | `code` | `string` | Code text color |
 | `codeBackground` | `string` | Code block background color |
 | `selectionTint` | `string` | Text selection tint color |
+| `selectionBackground` | `string` | Text selection fill. Defaults to `selectionTint` at 20% alpha |
+| `lineSelectionBackground` | `string` | Highlight color used in line selection mode |
 
 #### `ThemeSpacings`
 
@@ -164,6 +222,8 @@ Pass a `theme` prop to customize the appearance. All fields are optional — onl
 | `displayMode` | `DiffDisplayMode` | `'unified'` or `'sideBySide'` |
 | `scrollBehavior` | `DiffScrollBehavior` | `'horizontalOnly'` or `'bothAxes'` |
 | `changeHighlightStyle` | `DiffChangeHighlightStyle` | `'lineOnly'`, `'inlineOnly'`, or `'both'` |
+| `lineNumberStyle` | `DiffLineNumberStyle` | `'dual'` (separate old/new columns, default) or `'single'` (unified column). Unified mode only |
+| `showsChangeMarkers` | `boolean` | Show the `+`/`−` gutter column (default `true`). Combine `'single'` + `false` for a minimal gutter |
 | `contextCollapseThreshold` | `number` | Lines before context is collapsed (default `8`) |
 | `visibleContextLines` | `number` | Visible context lines around changes (default `2`) |
 | `gutterBackground` | `string` | Gutter background color |
