@@ -61,10 +61,14 @@ export type DiffScrollBehavior = 'horizontalOnly' | 'bothAxes';
 
 export type DiffChangeHighlightStyle = 'lineOnly' | 'inlineOnly' | 'both';
 
+export type DiffLineNumberStyle = 'dual' | 'single';
+
 export interface ThemeDiff {
   displayMode?: DiffDisplayMode;
   scrollBehavior?: DiffScrollBehavior;
   changeHighlightStyle?: DiffChangeHighlightStyle;
+  lineNumberStyle?: DiffLineNumberStyle;
+  showsChangeMarkers?: boolean;
   contextCollapseThreshold?: number;
   visibleContextLines?: number;
   gutterBackground?: string;

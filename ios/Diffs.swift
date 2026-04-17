@@ -158,6 +158,13 @@ final class HybridDiffs : HybridDiffsSpec {
                 case .both: mdTheme.diff.changeHighlightStyle = .both
                 }
             }
+            if let style = diff.lineNumberStyle {
+                switch style {
+                case .dual: mdTheme.diff.lineNumberStyle = .dual
+                case .single: mdTheme.diff.lineNumberStyle = .single
+                }
+            }
+            if let v = diff.showsChangeMarkers { mdTheme.diff.showsChangeMarkers = v }
             if let v = diff.contextCollapseThreshold { mdTheme.diff.contextCollapseThreshold = Int(v) }
             if let v = diff.visibleContextLines { mdTheme.diff.visibleContextLines = Int(v) }
             if let hex = diff.gutterBackground { mdTheme.diff.gutterBackground = UIColor(hex: hex) }

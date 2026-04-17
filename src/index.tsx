@@ -14,6 +14,7 @@ export type {
   DiffDisplayMode,
   DiffScrollBehavior,
   DiffChangeHighlightStyle,
+  DiffLineNumberStyle,
   CustomMenuItem,
   SelectionContext,
   CustomMenuEvent,
