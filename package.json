@@ -36,7 +36,7 @@
   "scripts": {
     "example": "yarn workspace react-native-diffs-example",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build",
+    "prepare": "bob build && cp -R nitrogen lib/",
     "nitrogen": "nitrogen",
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
