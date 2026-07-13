@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
 
   spm_dependency(s,
     url: "https://github.com/HumanInterfaceDesign/MarkdownView",
-    requirement: { kind: "branch", branch: "main" }, # todo use version
+    requirement: { kind: "branch", branch: "gary/before-concurrency" }, # todo use version
     products: ["MarkdownView"]
   )
 
